@@ -1,10 +1,19 @@
 import { MeshPortalMaterial } from '@react-three/drei'
 import type { PropsWithChildren } from 'react'
-import { extend } from '@react-three/fiber'
+import { Object3DNode, extend } from '@react-three/fiber'
 import { geometry } from 'maath'
 import { FrontSide } from 'three'
 
 extend(geometry)
+
+declare module '@react-three/fiber' {
+  interface ThreeElements {
+    roundedPlaneGeometry: Object3DNode<
+      geometry.RoundedPlaneGeometry,
+      typeof geometry.RoundedPlaneGeometry
+    >
+  }
+}
 
 export const Card = ({
   children,
