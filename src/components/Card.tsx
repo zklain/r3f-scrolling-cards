@@ -1,8 +1,8 @@
 import { MeshPortalMaterial } from '@react-three/drei'
-import type { PropsWithChildren } from 'react'
-import { Object3DNode, extend } from '@react-three/fiber'
+import { useRef, type PropsWithChildren, useEffect } from 'react'
+import { Object3DNode, extend, useFrame, useThree } from '@react-three/fiber'
 import { geometry } from 'maath'
-import { FrontSide } from 'three'
+import { FrontSide, Group, Mesh, Vector3 } from 'three'
 
 extend(geometry)
 
@@ -20,21 +20,24 @@ export const Card = ({
   width = 1,
   height = 1.61803398875,
   bgColor = '#2d1b50',
+  ...props
 }: PropsWithChildren & {
   width?: number
   height?: number
   bgColor?: string
 }) => {
+  const cardRef = useRef<Mesh>(null!)
+
+  useFrame((state, dt) => {})
+
   return (
-    <>
-      <mesh>
-        <roundedPlaneGeometry args={[width, height, 0.1]} />
-        <MeshPortalMaterial side={FrontSide}>
-          <ambientLight />
-          <color attach="background" args={[bgColor]} />
-          {children}
-        </MeshPortalMaterial>
-      </mesh>
-    </>
+    <mesh ref={cardRef} {...props}>
+      <roundedPlaneGeometry args={[width, height, 0.1]} />
+      <MeshPortalMaterial side={FrontSide}>
+        <ambientLight />
+        <color attach="background" args={[bgColor]} />
+        {children}
+      </MeshPortalMaterial>
+    </mesh>
   )
 }
